@@ -51,7 +51,7 @@ scalingo --app my-postgrest-api env-set \
 Create an empty commit and push (the buildpack needs no application code):
 
 ```bash
-git init && git commit --allow-empty -m "Deploy PostgREST"
+git init && git commit --allow-empty --message "Deploy PostgREST"
 git remote add scalingo git@ssh.osc-fr1.scalingo.com:my-postgrest-api.git
 git push scalingo main
 ```
@@ -237,7 +237,7 @@ EOF
 TOKEN_ALICE="<token generated for alice>"
 
 curl https://my-postgrest-api.osc-fr1.scalingo.io/todos \
-  -H "Authorization: Bearer $TOKEN_ALICE"
+  --header "Authorization: Bearer $TOKEN_ALICE"
 ```
 
 ```json
@@ -253,7 +253,7 @@ curl https://my-postgrest-api.osc-fr1.scalingo.io/todos \
 TOKEN_BOB="<token generated for bob>"
 
 curl https://my-postgrest-api.osc-fr1.scalingo.io/todos \
-  -H "Authorization: Bearer $TOKEN_BOB"
+  --header "Authorization: Bearer $TOKEN_BOB"
 ```
 
 ```json

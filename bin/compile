@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -o errexit -o nounset -o pipefail
 
 BUILD_DIR="$1"
 CACHE_DIR="$2"
@@ -11,16 +11,16 @@ POSTGREST_URL="https://github.com/PostgREST/postgrest/releases/download/v${POSTG
 echo "-----> Installing PostgREST v${POSTGREST_VERSION}"
 echo "       ${POSTGREST_URL}"
 
-mkdir -p "${BUILD_DIR}/bin"
+mkdir --parents "${BUILD_DIR}/bin"
 
 TMP_ARCHIVE="$(mktemp)"
-if ! curl -fSL "${POSTGREST_URL}" -o "${TMP_ARCHIVE}"; then
+if ! curl --fail --show-error --location "${POSTGREST_URL}" --output "${TMP_ARCHIVE}"; then
   echo "!! Failed to download PostgREST archive (check version / asset name)"
   exit 1
 fi
 
-tar -xJ -C "${BUILD_DIR}/bin" -f "${TMP_ARCHIVE}"
-rm -f "${TMP_ARCHIVE}"
+tar --extract --xz --directory "${BUILD_DIR}/bin" --file "${TMP_ARCHIVE}"
+rm --force "${TMP_ARCHIVE}"
 
 chmod +x "${BUILD_DIR}/bin/postgrest"
 
